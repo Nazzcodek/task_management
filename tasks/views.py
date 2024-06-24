@@ -6,6 +6,21 @@ from .serializers import TaskSerializer
 from .services import get_tasks_by_status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.shortcuts import render
+
+
+def index(request):
+    """
+    Render the index.html template.
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered HTTP response.
+    """
+
+    return render(request, 'tasks/index.html')
 
 
 class TaskViewSet(viewsets.ModelViewSet):
