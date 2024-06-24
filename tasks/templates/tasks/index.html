@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    {% load static %}
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <!-- Navbar -->
+        <nav class="bg-white p-4 rounded shadow-md mb-4">
+            <h1 class="text-2xl font-bold">Task Management Dashboard</h1>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="w-1/4 p-4 bg-white rounded shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Filters</h2>
+                <!-- Filters for priority, due date, category -->
+                <div>
+                    <label for="priority" class="block mb-2">Priority</label>
+                    <select id="priority" class="w-full p-2 border rounded mb-4">
+                        <option value="">All</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+
+                    <label for="category" class="block mb-2">Category</label>
+                    <input type="text" id="category" class="w-full p-2 border rounded mb-4">
+
+                    <label for="due_date" class="block mb-2">Due Date</label>
+                    <input type="date" id="due_date" class="w-full p-2 border rounded mb-4">
+                    
+                    <button id="filterTasks" class="w-full bg-blue-500 text-white p-2 rounded">Filter</button>
+                </div>
+            </aside>
+
+            <!-- Tasks Section -->
+            <section class="flex-1 p-4">
+                <h2 class="text-xl font-semibold mb-4">Tasks</h2>
+                <div class="flex justify-between mb-4">
+                    <input type="text" id="search" placeholder="Search tasks..." class="p-2 border rounded w-1/2">
+                    <button id="addTask" class="bg-green-500 text-white p-2 rounded">Add Task</button>
+                </div>
+                <div id="tasks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Tasks will be loaded here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-4 rounded shadow-md w-1/2">
+            <h3 class="text-xl font-semibold mb-4">Task</h3>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div class="mb-4">
+                    <label for="taskTitle" class="block mb-2">Title</label>
+                    <input type="text" id="taskTitle" class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="taskDescription" class="block mb-2">Description</label>
+                    <textarea id="taskDescription" class="w-full p-2 border rounded"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="taskStatus" class="block mb-2">Status</label>
+                    <select id="taskStatus" class="w-full p-2 border rounded">
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="taskPriority" class="block mb-2">Priority</label>
+                    <select id="taskPriority" class="w-full p-2 border rounded">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="taskDueDate" class="block mb-2">Due Date</label>
+                    <input type="date" id="taskDueDate" class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="taskCategory" class="block mb-2">Category</label>
+                    <input type="text" id="taskCategory" class="w-full p-2 border rounded">
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" id="closeModal" class="bg-gray-500 text-white p-2 rounded mr-2">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery AJAX scripts -->
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>
