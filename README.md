@@ -10,7 +10,6 @@ This project is a Task Management system developed with Django and Django REST F
 - [Running the Application](#running-the-application)
 - [API Endpoints](#api-endpoints)
 - [Running Tests](#running-tests)
-- [Future Work](#future-work)
 - [Contributing](#contributing)
 
 ## Requirements
