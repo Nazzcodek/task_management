@@ -3,105 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management Dashboard</title>
+    <title>Task Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script async src="https://basicons.xyz/embed.js"> </script>
+    <script src="/static/scripts.js"></script>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-4">
-        <!-- Navbar -->
-        <nav class="bg-white p-4 rounded shadow-md mb-4">
-            <h1 class="text-2xl font-bold">Task Management Dashboard</h1>
-        </nav>
-        
-        <!-- Main Content -->
-        <div class="flex">
-            <!-- Sidebar -->
-            <aside class="w-1/4 p-4 bg-white rounded shadow-md">
-                <h2 class="text-xl font-semibold mb-4">Filters</h2>
-                <!-- Filters for priority, due date, category -->
-                <div>
-                    <label for="priority" class="block mb-2">Priority</label>
-                    <select id="priority" class="w-full p-2 border rounded mb-4">
-                        <option value="">All</option>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-
-                    <label for="category" class="block mb-2">Category</label>
-                    <input type="text" id="category" class="w-full p-2 border rounded mb-4">
-
-                    <label for="due_date" class="block mb-2">Due Date</label>
-                    <input type="date" id="due_date" class="w-full p-2 border rounded mb-4">
-                    
-                    <button id="filterTasks" class="w-full bg-blue-500 text-white p-2 rounded">Filter</button>
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-1/6 bg-grey-900 text-black h-screen p-4">
+            <div class="flex items-center mb-6">
+                <div class="text-2xl font-bold">Tasky</div>
+            </div>
+            <nav class="flex flex-col space-y-2">
+                <a href="#" class="flex items-center space-x-2 p-2 rounded hover:bg-blue-700 text-white bg-blue-700">
+                    <span class="material-icons text-white"><i class="bsc-home-house-4 text-white"></i></span>
+                    <span class="hidden md:block">Dashboard</span> <!-- Hide text on small screens -->
+                </a>
+                <a href="#" class="flex items-center space-x-2 p-2 rounded hover:bg-blue-700 hover:text-white">
+                    <span class="material-icons"><i class="bsc-edit-write"></i></span>
+                    <span class="hidden md:block">Tasks</span> <!-- Hide text on small screens -->
+                </a>
+                <a href="#" class="flex items-center space-x-2 p-2 rounded hover:bg-blue-700 hover:text-white">
+                    <span class="material-icons"><i class="bsc-calendar-date-appointment-time"></i></span>
+                    <span class="hidden md:block">Calendar</span> <!-- Hide text on small screens -->
+                </a>
+                <a href="#" class="flex items-center space-x-2 p-2 rounded hover:bg-blue-700 hover:text-white">
+                    <span class="material-icons"><i class="bsc-group-people-accounts-user-person-profile"></i></span>
+                    <span class="hidden md:block">Members</span> <!-- Hide text on small screens -->
+                </a>
+            </nav>
+        </div>
+        <!-- Main content -->
+        <div class="w-5/6 bg-white p-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-16">
+                <input type="text" id="search" placeholder="Search tasks..." class="w-1/3 p-1 bg-gray-100 rounded border border-gray-300">
+                <div class="flex items-center space-x-4">
+                    <span class="material-icons"><i class="bsc-comment-square-chat-message-2"></i></span>
+                    <span class="material-icons"><i class="bsc-notification-bell-alarm"></i></span>
+                    <img src="https://i.pravatar.cc" alt="Avatar" class="w-8 h-8 rounded-full">
                 </div>
-            </aside>
+            </div>
+            <!-- Task controls -->
+            <div class="flex justify-between items-center mb-16">
+                <div class="flex space-x-1">
+                    <button id="preview" class="px-4 py-1 bg-white-600 text-black rounded border-2 flex items-center space-x-1">
+                        <i class="bsc-check-box-2"></i>
+                        <span>Preview</span>
+                    </button>
+                    <button id="sort" class="px-4 py-1 bg-white-600 text-black rounded border-2 flex items-center space-x-1">
+                        <i class="bsc-drag-vertical"></i>
+                        <span>Sort</span>
+                    </button>
+                    <button id="filterTasks" class="px-4 py-1 bg-white-600 text-black rounded border-2 flex items-center space-x-1">
+                        <i class="bsc-adjust-settings-horizontal"></i>
+                        <span>Filter</span>
+                    </button>
+                </div>
+                <div class="flex items-center">
+                    <div id="user-avatars" class="flex -space-x-4 mb-2"></div>
+                    <div class="flex justify-center items-center mt-0 ml-4">
+                        <button id="addUserBtn" class="w-7 h-7 rounded-full border-2 border-dotted border-gray-400 flex justify-center items-center text-gray-400 hover:border-gray-600 hover:text-gray-600">
+                            <span class="text-xl">+</span>
+                        </button>
+                    </div>
+                    <button id="addTask" class="ml-4 px-4 py-1 bg-blue-600 text-white rounded">+ Add Task</button>
+                </div>
+                
+            </div>
 
-            <!-- Tasks Section -->
-            <section class="flex-1 p-4">
-                <h2 class="text-xl font-semibold mb-4">Tasks</h2>
-                <div class="flex justify-between mb-4">
-                    <input type="text" id="search" placeholder="Search tasks..." class="p-2 border rounded w-1/2">
-                    <button id="addTask" class="bg-green-500 text-white p-2 rounded">Add Task</button>
+            <!-- Modal Structure (hidden by default) -->
+            <div id="addUserModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3 text-center">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Add New User</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <input type="text" id="username" placeholder="Username" class="mb-4 px-4 py-2 border rounded w-full">
+                            <input type="password" id="password" placeholder="Password" class="mb-4 px-4 py-2 border rounded w-full">
+                            <div id="errorMessage" class="text-red-500 hidden"></div>
+                            <button id="cancelButton" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700">Cancel</button>
+                            <button id="submitUser" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Add User</button>
+                        </div>
+                    </div>
                 </div>
-                <div id="tasks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Tasks will be loaded here -->
+            </div>
+
+            <!-- Task columns -->
+            <div class="flex space-x-24">
+                <!-- In Progress Column -->
+                <div class="w-1/3">
+                    <div class="mb-4 border border-blue-500 p-2 rounded bg-white">
+                        <h2 id="in-progress-title" class="text-m font-bold">In Progress</h2>
+                    </div>
+                    <div id="in-progress-tasks" class="space-y-4" data-status="In Progress">
+                        <!-- Tasks will be loaded here -->
+                    </div>
                 </div>
-            </section>
+                <!-- Completed Column -->
+                <div class="w-1/3">
+                    <div class="mb-4 border border-blue-500 p-2 rounded bg-white">
+                        <h2 id="completed-title" class="text-m font-bold">Completed</h2>
+                    </div>
+                    <div id="completed-tasks" class="space-y-4" data-status="Completed">
+                        <!-- Tasks will be loaded here -->
+                    </div>
+                </div>
+                <!-- Over Due Column -->
+                <div class="w-1/3">
+                    <div class="mb-4 border border-blue-500 p-2 rounded bg-white">
+                        <h2 id="over-due-title" class="text-m font-bold">Over-Due</h2> 
+                    </div>
+                    <div id="over-due-tasks" class="space-y-4" data-status="Overdue">
+                        <!-- Tasks will be loaded here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Task Modal -->
-    <div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-4 rounded shadow-md w-1/2">
-            <h3 class="text-xl font-semibold mb-4">Task</h3>
+    <div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded w-1/3">
             <form id="taskForm">
                 <input type="hidden" id="taskId">
                 <div class="mb-4">
-                    <label for="taskTitle" class="block mb-2">Title</label>
-                    <input type="text" id="taskTitle" class="w-full p-2 border rounded">
+                    <label for="taskTitle" class="block text-gray-700">Title</label>
+                    <input type="text" id="taskTitle" class="w-full p-2 rounded border border-gray-300">
                 </div>
                 <div class="mb-4">
-                    <label for="taskDescription" class="block mb-2">Description</label>
-                    <textarea id="taskDescription" class="w-full p-2 border rounded"></textarea>
+                    <label for="taskDescription" class="block text-gray-700">Description</label>
+                    <textarea id="taskDescription" class="w-full p-2 rounded border border-gray-300"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="taskStatus" class="block mb-2">Status</label>
-                    <select id="taskStatus" class="w-full p-2 border rounded">
+                    <label for="taskStatus" class="block text-gray-700">Status</label>
+                    <select id="taskStatus" class="w-full p-2 rounded border border-gray-300">
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
-                        <option value="Overdue">Overdue</option>
+                        <option value="Overdue">Over-Due</option>
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="taskPriority" class="block mb-2">Priority</label>
-                    <select id="taskPriority" class="w-full p-2 border rounded">
+                    <label for="taskPriority" class="block text-gray-700">Priority</label>
+                    <select id="taskPriority" class="w-full p-2 rounded border border-gray-300">
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="taskDueDate" class="block mb-2">Due Date</label>
-                    <input type="date" id="taskDueDate" class="w-full p-2 border rounded">
+                    <label for="taskDueDate" class="block text-gray-700">Due Date</label>
+                    <input type="date" id="taskDueDate" class="w-full p-2 rounded border border-gray-300">
                 </div>
                 <div class="mb-4">
-                    <label for="taskCategory" class="block mb-2">Category</label>
-                    <input type="text" id="taskCategory" class="w-full p-2 border rounded">
+                    <label for="taskCategory" class="block text-gray-700">Category</label>
+                    <input type="text" id="taskCategory" class="w-full p-2 rounded border border-gray-300">
                 </div>
-                <div class="flex justify-end">
-                    <button type="button" id="closeModal" class="bg-gray-500 text-white p-2 rounded mr-2">Cancel</button>
-                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Save</button>
+                <div class="mb-4">
+                    <label for="taskCategory" class="block text-gray-700">Assigned To</label>
+                    <select id="taskAssignee" class="w-full p-2 rounded border border-gray-300">
+                      </select>
+                </div>
+                
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <!-- jQuery AJAX scripts -->
-    <script src="{% static 'scripts.js' %}"></script>
 </body>
 </html>

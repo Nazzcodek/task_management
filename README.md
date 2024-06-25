@@ -66,7 +66,7 @@ To start the development server, use the following command:
 python manage.py runserver
 ```
 
-The application will be accessible at `http://127.0.0.1:8000/`.
+The application will be accessible at `http://127.0.0.1:8000/login/`. This will take you to the login page where user will be able to login into the dashboard
 
 ## API Endpoints
 
@@ -78,6 +78,7 @@ The backend provides the following API endpoints for managing tasks:
 - **Retrieve a specific task:** `GET /api/v1/tasks/{id}/`
 - **Update an existing task:** `PUT /api/v1/tasks/{id}/`
 - **Delete a task:** `DELETE /api/v1/tasks/{id}/`
+- **Add User:** `POST /api/v1/users/add_user/`
 
 ### Authentication
 
@@ -97,13 +98,11 @@ python manage.py test
 
 The tests cover the core functionalities of the Task API endpoints.
 
-## Future Work
-
 ### Frontend
 
-The frontend will be developed using a modern JavaScript framework/library such as React, Angular, or Vue.js. This section will be updated with installation and usage instructions once the frontend is implemented.
+The frontend will be developed using a modern JavaScript JQuery, HTML and TailwindCSS
 
-### Additional Features
+### Features
 
 - User registration and profile management
 - Task notifications and reminders

@@ -12,5 +12,5 @@ router.register(r'tasks', TaskViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('tasks/', index, name='index'),
+    path('index/', index, name='index'),
 ]
